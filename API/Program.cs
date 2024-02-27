@@ -7,7 +7,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+Application.DependencyResolvement.DependencyResolverService.RegisterApplicationLayer(builder.Services);
+Infrastructure.DependencyResolvement.DependencyResolverService.RegisterApplicationLayer(builder.Services);
+
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
