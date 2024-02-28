@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
+using Application.JWT;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -37,5 +38,26 @@ public class AuthenticationController: ControllerBase
         {
             return StatusCode(500, "An error occurred while processing your request.");
         }
+    }
+
+    [HttpPost("login")]
+    public async Task<ActionResult> Login(LoginDTO loginDto)
+    {
+        
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            var serviceResponse = await _authService.LoginAsync(loginDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
     }
 }

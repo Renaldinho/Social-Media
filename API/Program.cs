@@ -1,3 +1,6 @@
+using Infrastructure;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +12,10 @@ builder.Services.AddSwaggerGen();
 
 Application.DependencyResolvement.DependencyResolverService.RegisterApplicationLayer(builder.Services);
 Infrastructure.DependencyResolvement.DependencyResolverService.RegisterApplicationLayer(builder.Services);
+
+builder.Services.AddDbContext<DatabaseContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("ConnectionString")));
+
 
 
 var app = builder.Build();
