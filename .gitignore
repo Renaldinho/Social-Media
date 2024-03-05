@@ -1,5 +1,9 @@
+# Default ignore patterns
 bin/
 obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
+packages/
+*.iml
+_ReSharper.Caches/
+
+# Ignore appsettings and environment-specific configuration files
+API/appsettings.json

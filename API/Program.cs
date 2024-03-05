@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-Application.DependencyResolvement.DependencyResolverService.RegisterApplicationLayer(builder.Services);
+Application.DependencyResolvement.DependencyResolverService.RegisterApplicationLayer(builder.Services, builder.Configuration);
 Infrastructure.DependencyResolvement.DependencyResolverService.RegisterApplicationLayer(builder.Services);
 
 builder.Services.AddDbContext<DatabaseContext>(options =>

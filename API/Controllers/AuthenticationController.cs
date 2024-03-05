@@ -43,7 +43,6 @@ public class AuthenticationController: ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult> Login(LoginDTO loginDto)
     {
-        
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -52,12 +51,18 @@ public class AuthenticationController: ControllerBase
         try
         {
             var serviceResponse = await _authService.LoginAsync(loginDto);
+            if (serviceResponse.Success)
+            {
+                return Ok(new { Token = serviceResponse.Data, Message = "Login successful" });
+            }
+            return Unauthorized("Authentication failed.");
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            // Log the exception details here instead of console to maintain clean API responses.
+            // Consider using a logging framework or service.
+            // For the sake of error handling, return a more generic error message to the client.
+            return StatusCode(500, "An internal error occurred.");
         }
-        
     }
 }

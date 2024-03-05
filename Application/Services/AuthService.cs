@@ -9,10 +9,14 @@ namespace Application.Services;
 public class AuthService: IAuthService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IEncryptionService _encryptionService;
+    private readonly ITokenService _tokenService;
 
-    public AuthService(IUserRepository userRepository)
+    public AuthService(IUserRepository userRepository, IEncryptionService encryptionService, ITokenService tokenService)
     {
         _userRepository = userRepository;
+        _encryptionService = encryptionService;
+        _tokenService = tokenService;
     }
 
     public async Task<ServiceResponse> RegisterAsync(RegisterDTO dto)
@@ -22,7 +26,7 @@ public class AuthService: IAuthService
             return new ServiceResponse { Success = false, Message = "Email is already in use." };
         } 
         
-        CreatePasswordHash(dto.Password, out byte[] passwordHash, out byte[] passwordSalt);
+        _encryptionService.CreatePasswordHash(dto.Password, out byte[] passwordHash, out byte[] passwordSalt);
         
         var user = new User
         {
@@ -36,15 +40,22 @@ public class AuthService: IAuthService
         
     }
 
-    public Task<BearerToken> LoginAsync(LoginDTO loginDto)
+    public async Task<ServiceResponse> LoginAsync(LoginDTO loginDto)
     {
-        
+        var user = await _userRepository.FindByEmail(loginDto.Email);
+        if (user == null)
+        {
+            return new ServiceResponse { Success = false, Message = "User not found." };
+        }
+
+        var passwordValid = _encryptionService.VerifyPasswordHash(loginDto.Password, user.PasswordHash, user.PasswordSalt);
+        if (!passwordValid)
+        {
+            return new ServiceResponse { Success = false, Message = "Credentials are incorrect." };
+        }
+
+        var token = _tokenService.GenerateToken(user);
+        return new ServiceResponse { Success = true, Data = token, Message = "Login successful." };
     }
 
-    private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-    {
-        using var hmac = new System.Security.Cryptography.HMACSHA512();
-        passwordSalt = hmac.Key;
-        passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-    }
 }
