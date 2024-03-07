@@ -1,0 +1,23 @@
+﻿version: '3.8'
+services:
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+      - "5672:5672" # AMQP protocol
+      - "15672:15672" # Management UI
+  api:
+    build:
+      context: .
+      dockerfile: API/Dockerfile # Assuming your Dockerfile is here
+    depends_on:
+      - rabbitmq
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80;http://+:443
+      - RabbitMQ__ConnectionString=amqp://user:password@rabbitmq:5672
+    ports:
+      - "8000:80"
