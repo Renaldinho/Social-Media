@@ -4,7 +4,6 @@ using Application.Services;
 using Application.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +18,13 @@ public static class DependencyResolverService
             Secret = configuration["Secrets:JwtSecret"]
         };
         services.AddSingleton(jwtConfig); // Make JwtConfig available for DI
+        
+        var connectionString = Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString");
+        var rabbitMqConfig = new RabbitMqConfiguration()
+        {
+            ConnectionString = connectionString
+        };
+        services.AddSingleton(rabbitMqConfig);
         
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IEncryptionService, EncryptionService>();
