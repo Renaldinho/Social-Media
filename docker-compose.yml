@@ -7,17 +7,27 @@ services:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
     ports:
-      - "5672:5672" # AMQP protocol
-      - "15672:15672" # Management UI
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - myapp-network
+
   api:
     build:
       context: .
-      dockerfile: API/Dockerfile # Assuming your Dockerfile is here
+      dockerfile: API/Dockerfile
     depends_on:
       - rabbitmq
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80;http://+:443
-      - RabbitMQ__ConnectionString=amqp://user:password@rabbitmq:5672
+      - EASYNETQ_CONNECTION_STRING=amqp://user:password@rabbitmq:5672/
     ports:
       - "8000:80"
+    networks:
+      - myapp-network
+
+networks:
+  myapp-network:
+    name: myapp-network
+    driver: bridge

@@ -19,7 +19,7 @@ public static class DependencyResolverService
         };
         services.AddSingleton(jwtConfig); // Make JwtConfig available for DI
         
-        var connectionString = Environment.GetEnvironmentVariable("RabbitMQ__ConnectionString");
+        var connectionString = Environment.GetEnvironmentVariable("EASYNETQ_CONNECTION_STRING");
         var rabbitMqConfig = new RabbitMqConfiguration()
         {
             ConnectionString = connectionString
@@ -29,6 +29,7 @@ public static class DependencyResolverService
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IEncryptionService, EncryptionService>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IEmailActionService, EmailActionService>();
 
         services.AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters()
