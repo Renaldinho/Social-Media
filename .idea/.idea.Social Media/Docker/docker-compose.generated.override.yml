@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.8"
+services:
+  api:
+    build:
+      context: "C:\\Users\\Bruger\\Documents\\GitHub\\Social Media"
+      dockerfile: "API/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net7.0/API.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "api:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\Bruger\\.nuget\\packages:/root/.nuget/packages"
+    - "C:\\Users\\Bruger\\Documents\\GitHub\\Social Media\\API:/app:rw"
+    - "C:\\Users\\Bruger\\Documents\\GitHub\\Social Media:/src:rw"
+    working_dir: "/app"

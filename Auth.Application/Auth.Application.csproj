@@ -4,9 +4,11 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>Application</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="EasyNetQ" Version="7.8.0" />
       <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.4.0" />
@@ -14,7 +16,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+      <ProjectReference Include="..\Auth.Infrastructure\Auth.Infrastructure.csproj" />
+      <ProjectReference Include="..\SharedConfig\SharedConfig.csproj" />
     </ItemGroup>
 
 </Project>

@@ -11,12 +11,14 @@ public class AuthService: IAuthService
     private readonly IUserRepository _userRepository;
     private readonly IEncryptionService _encryptionService;
     private readonly ITokenService _tokenService;
+    private readonly IEmailActionService _emailActionService;
 
-    public AuthService(IUserRepository userRepository, IEncryptionService encryptionService, ITokenService tokenService)
+    public AuthService(IUserRepository userRepository, IEncryptionService encryptionService, ITokenService tokenService, IEmailActionService emailActionService)
     {
         _userRepository = userRepository;
         _encryptionService = encryptionService;
         _tokenService = tokenService;
+        _emailActionService = emailActionService;
     }
 
     public async Task<ServiceResponse> RegisterAsync(RegisterDTO dto)
@@ -35,6 +37,8 @@ public class AuthService: IAuthService
             PasswordSalt = passwordSalt
         };
         await _userRepository.AddUser(user);
+        
+        _emailActionService.SendSuccessfulRegistrationEmail(user.Email);
 
         return new ServiceResponse { Success = true, Message = "User registered successfully." };
         

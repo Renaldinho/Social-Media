@@ -4,7 +4,6 @@ using Application.Services;
 using Application.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,9 +19,17 @@ public static class DependencyResolverService
         };
         services.AddSingleton(jwtConfig); // Make JwtConfig available for DI
         
+        var connectionString = Environment.GetEnvironmentVariable("EASYNETQ_CONNECTION_STRING");
+        var rabbitMqConfig = new RabbitMqConfiguration()
+        {
+            ConnectionString = connectionString
+        };
+        services.AddSingleton(rabbitMqConfig);
+        
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IEncryptionService, EncryptionService>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IEmailActionService, EmailActionService>();
 
         services.AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters()
