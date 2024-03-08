@@ -59,7 +59,7 @@ public class AuthenticationController: ControllerBase
         }
         catch (Exception e)
         {
-            // Log the exception details here instead of console to maintain clean API responses.
+            // Log the exception details here instead of console to maintain clean Auth.API responses.
             // Consider using a logging framework or service.
             // For the sake of error handling, return a more generic error message to the client.
             return StatusCode(500, "An internal error occurred.");

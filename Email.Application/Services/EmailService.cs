@@ -1,10 +1,13 @@
-﻿using MailKit.Net.Smtp;
+﻿
+
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
+using Services.Interfaces;
 
 namespace Services;
 
-public class EmailService
+public class EmailService: IEmailService
 {
     private readonly string _receiverEmail;
     private readonly string _smtpServer;
@@ -21,24 +24,28 @@ public class EmailService
         _smtpPassword = "sehu yvbm vxrv ibzj"; // Replace with your app-specific password or password
     }
 
-    public void SendEmail(string subject, string body)
+    public async Task SendEmail(string email, string message)
     {
         using (var smtp = new SmtpClient())
         {
-            smtp.Connect(_smtpServer, _smtpPort, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_smtpUsername, _smtpPassword);
-            var email = new MimeMessage();
-            email.From.Add(new MailboxAddress("WhereHouse Inc", _smtpUsername));
-            email.To.Add(MailboxAddress.Parse(_receiverEmail));
-            email.Subject = subject;
-            email.Body = new TextPart("plain")
+            Console.WriteLine("Sending email");
+            
+            await smtp.ConnectAsync(_smtpServer, _smtpPort, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(_smtpUsername, _smtpPassword);
+
+            var mailMessage = new MimeMessage();
+            mailMessage.From.Add(new MailboxAddress("WhereHouse Inc", _smtpUsername));
+            mailMessage.To.Add(MailboxAddress.Parse(email));
+            mailMessage.Subject = "Your Subject Here"; // Replace with dynamic subject
+            mailMessage.Body = new TextPart("plain")
             {
-                Text = body
+                Text = message
             };
-            smtp.Send(email);
+
+            await smtp.SendAsync(mailMessage);
+            
+            Console.WriteLine("Sent email");
             smtp.Disconnect(true);
         }
-
-        Console.WriteLine($"Email sent to {_receiverEmail}");
     }
 }
