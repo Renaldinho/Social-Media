@@ -1,6 +1,7 @@
 ﻿using Application.Context;
 using Application.Interfaces;
 using RabbitMQ.Client;
+using SharedConfig.Messages.Email;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Application.Services;
@@ -26,8 +27,8 @@ public class EmailActionService: IEmailActionService
         const string queueName = "registration_emails";
         channel.QueueDeclare(queueName, durable: true, exclusive: false, autoDelete: false);
 
-        var message = new { Email = email };
-        var messageBytes = JsonSerializer.SerializeToUtf8Bytes(message);
+        var recipient = new RegistrationRecipient { Email = email };
+        var messageBytes = JsonSerializer.SerializeToUtf8Bytes(recipient);
 
         var basicProperties = channel.CreateBasicProperties();
         basicProperties.Persistent = true;

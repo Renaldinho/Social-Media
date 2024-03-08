@@ -15,13 +15,13 @@ public class EmailService: IEmailService
     private readonly string _smtpUsername;
     private readonly string _smtpPassword;
 
-    public EmailService() // Constructor with hardcoded values
+    public EmailService()
     {
-        _receiverEmail = "renarsmednieks13@gmail.com"; // Replace with your actual recipient email
-        _smtpServer = "smtp.gmail.com"; // Replace with your actual SMTP server
+        _receiverEmail = "renarsmednieks13@gmail.com";
+        _smtpServer = "smtp.gmail.com";
         _smtpPort = 587;
-        _smtpUsername = "taterclientservice@gmail.com"; // Replace with your email address
-        _smtpPassword = "sehu yvbm vxrv ibzj"; // Replace with your app-specific password or password
+        _smtpUsername = "taterclientservice@gmail.com";
+        _smtpPassword = "sehu yvbm vxrv ibzj";
     }
 
     public async Task SendEmail(string email, string message)
@@ -34,9 +34,9 @@ public class EmailService: IEmailService
             await smtp.AuthenticateAsync(_smtpUsername, _smtpPassword);
 
             var mailMessage = new MimeMessage();
-            mailMessage.From.Add(new MailboxAddress("WhereHouse Inc", _smtpUsername));
+            mailMessage.From.Add(new MailboxAddress("Twooter Inc", _smtpUsername));
             mailMessage.To.Add(MailboxAddress.Parse(email));
-            mailMessage.Subject = "Your Subject Here"; // Replace with dynamic subject
+            mailMessage.Subject = "Account registration"; 
             mailMessage.Body = new TextPart("plain")
             {
                 Text = message
@@ -44,7 +44,7 @@ public class EmailService: IEmailService
 
             await smtp.SendAsync(mailMessage);
             
-            Console.WriteLine("Sent email");
+            Console.WriteLine("Email has been delivered to" + email);
             smtp.Disconnect(true);
         }
     }
