@@ -1,7 +1,7 @@
 ﻿{
-  "Routes": [ 
+  "Routes": [
     {
-      "DownstreamPathTemplate": "/User",
+      "DownstreamPathTemplate": "/User/{userId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -9,8 +9,20 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/User",
-      "UpstreamHttpMethod": ["Get", "Post", "Put", "Delete"]
+      "UpstreamPathTemplate": "/gateway/users/{userId}",
+      "UpstreamHttpMethod": [ "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/User/create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-microservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/users/create",
+      "UpstreamHttpMethod": [ "Post" ]
     }
   ],
   "GlobalConfiguration": {
