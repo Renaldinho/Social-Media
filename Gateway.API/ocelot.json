@@ -23,6 +23,54 @@
       ],
       "UpstreamPathTemplate": "/gateway/users/create",
       "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/Posts/{postId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "post-microservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/posts/{postId}",
+      "UpstreamHttpMethod": ["Get"]
+    },
+    {
+      "DownstreamPathTemplate": "/Posts",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "post-microservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/posts",
+      "UpstreamHttpMethod": ["Post"]
+    },
+    {
+      "DownstreamPathTemplate": "/Posts/{postId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "post-microservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/posts/{postId}",
+      "UpstreamHttpMethod": ["Put"]
+    },
+    {
+      "DownstreamPathTemplate": "/Posts/{postId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "post-microservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/posts/{postId}",
+      "UpstreamHttpMethod": ["Delete"]
     }
   ],
   "GlobalConfiguration": {

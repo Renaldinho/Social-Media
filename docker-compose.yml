@@ -36,8 +36,21 @@ services:
       - "8001:80"
     networks:
       - myapp-network
-      
-
+        
+  post-microservice:
+    build:
+      context: .
+      dockerfile: Post.API/Dockerfile
+    environment:      
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - "8002:80"
+    networks: 
+      - myapp-network
+  
+  
+  
   auth-microservice:
     build:
       context: .
