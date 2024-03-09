@@ -32,6 +32,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80;http://+:443
+      - EASYNETQ_CONNECTION_STRING=amqp://user:password@rabbitmq:5672/
     ports:
       - "8001:80"
     networks:

@@ -29,7 +29,7 @@ public static class DependencyResolverService
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IEncryptionService, EncryptionService>();
         services.AddScoped<ITokenService, TokenService>();
-        services.AddScoped<IEmailActionService, EmailActionService>();
+        services.AddScoped<IActionService, ActionService>();
 
         services.AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters()
