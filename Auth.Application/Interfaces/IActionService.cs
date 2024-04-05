@@ -1,6 +1,8 @@
 ﻿namespace Application.Interfaces;
 
-public interface IEmailActionService
+public interface IActionService
 {
     void SendSuccessfulRegistrationEmail(string email);
+
+    void SendCreateUserMessage(int id);
 }

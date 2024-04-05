@@ -1,0 +1,79 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/User/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-microservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/users/{userId}",
+      "UpstreamHttpMethod": [ "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/User/create",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-microservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/users/create",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/Posts/{postId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "post-microservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/posts/{postId}",
+      "UpstreamHttpMethod": ["Get"]
+    },
+    {
+      "DownstreamPathTemplate": "/Posts",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "post-microservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/posts",
+      "UpstreamHttpMethod": ["Post"]
+    },
+    {
+      "DownstreamPathTemplate": "/Posts/{postId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "post-microservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/posts/{postId}",
+      "UpstreamHttpMethod": ["Put"]
+    },
+    {
+      "DownstreamPathTemplate": "/Posts/{postId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "post-microservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/posts/{postId}",
+      "UpstreamHttpMethod": ["Delete"]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:7000"
+  }
+}

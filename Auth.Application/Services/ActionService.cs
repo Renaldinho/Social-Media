@@ -2,15 +2,16 @@
 using Application.Interfaces;
 using RabbitMQ.Client;
 using SharedConfig.Messages.Email;
+using SharedConfig.Messages.User;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Application.Services;
 
-public class EmailActionService: IEmailActionService
+public class ActionService: IActionService
 {
     private readonly IConnection _connection;
 
-    public EmailActionService(RabbitMqConfiguration rabbitMqConfiguration)
+    public ActionService(RabbitMqConfiguration rabbitMqConfiguration)
     {
         // Establish connection to RabbitMQ using connection string
         var factory = new ConnectionFactory() { Uri = new Uri(rabbitMqConfiguration.ConnectionString)};
@@ -28,6 +29,22 @@ public class EmailActionService: IEmailActionService
         channel.QueueDeclare(queueName, durable: true, exclusive: false, autoDelete: false);
 
         var recipient = new RegistrationRecipient { Email = email };
+        var messageBytes = JsonSerializer.SerializeToUtf8Bytes(recipient);
+
+        var basicProperties = channel.CreateBasicProperties();
+        basicProperties.Persistent = true;
+
+        channel.BasicPublish("", queueName, basicProperties, messageBytes);
+    }
+
+    public void SendCreateUserMessage(int id)
+    {
+        using var channel = _connection.CreateModel();
+
+        const string queueName = "user_profile_registration";
+        channel.QueueDeclare(queueName, durable: true, exclusive: false, autoDelete: false);
+
+        var recipient = new CreateUserMessage { Id = id };
         var messageBytes = JsonSerializer.SerializeToUtf8Bytes(recipient);
 
         var basicProperties = channel.CreateBasicProperties();
