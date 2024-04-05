@@ -10,9 +10,13 @@ COPY ["Auth.API/Auth.API.csproj", "Auth.API/"]
 RUN dotnet restore "Auth.API/Auth.API.csproj"
 COPY . .
 WORKDIR "/src/Auth.API"
-RUN dotnet build "Auth.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "Auth.API.csproj" -c $BUILD_CONFIGURATION -o /app/build1
+WORKDIR /src/Tests 
+COPY ["Tests/Tests.csproj", "Tests/"]
+RUN dotnet test -c Release || exit 1
 
 FROM build AS publish
+WORKDIR "/src/Auth.API"
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "Auth.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
